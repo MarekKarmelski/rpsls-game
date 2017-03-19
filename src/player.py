@@ -6,6 +6,7 @@
 
 class Player:
 
-    def __new__(cls):
-        if cls.__name__ is 'Player':
-            raise Exception("Unable to create an instance of abstract class Player")
+    elements = ['lizard', 'paper', 'rock', 'scissors', 'spock']
+
+    def choose_element(self):
+        raise NotImplemented

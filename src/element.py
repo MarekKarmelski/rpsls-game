@@ -15,3 +15,13 @@ class Element:
 
     def __eq__(self, other):
         return self.name == other.name
+
+    def __lt__(self, other):
+        if self.name in other.beats:
+            return True
+        return False
+
+    def __gt__(self, other):
+        if self.name in other.traversed_by:
+            return True
+        return False
