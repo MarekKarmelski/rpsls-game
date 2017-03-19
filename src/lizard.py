@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from rpsls.src.element import Element
+from src.element import Element
 
 """Lizard class."""
 
