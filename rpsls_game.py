@@ -34,6 +34,7 @@ class RPSLSGame:
                     elif game_option == 2:
                         run_game = True
                         self.clear()
+                        self.points_game()
                         self.display_game_menu()
                     elif game_option == 3:
                         self.clear()
@@ -135,6 +136,37 @@ class RPSLSGame:
         else:
             print('REMIS!!!')
 
+    def points_game(self):
+        """Points game."""
+        points = self.get_points_number_from_stream()
+        current_round = 1
+        real_palyer_score = 0
+        ai_player_score = 0
+        real_palyer = RealPlayer()
+        ai_player = AiPlayer()
+        while real_palyer_score < points and ai_player_score < points:
+            print('ROUND {0}'.format(current_round))
+            print('SCORE: REAL USER({0}) - AI({1})'.format(real_palyer_score, ai_player_score))
+            real_player_element = real_palyer.choose_element()
+            ai_player_element = ai_player.choose_element()
+            print('User selection: {}'.format(real_player_element))
+            print('AI selection: {}'.format(ai_player_element))
+            if real_player_element == ai_player_element:
+                real_palyer_score += 1
+                ai_player_score += 1
+            elif real_player_element > ai_player_element:
+                real_palyer_score += 1
+            elif real_player_element < ai_player_element:
+                ai_player_score += 1
+            current_round += 1
+        print('SCORE: REAL USER({0}) - AI({1})'.format(real_palyer_score, ai_player_score))
+        if real_palyer_score > ai_player_score:
+            print('YOU WIN!!!!')
+        elif ai_player_score > real_palyer_score:
+            print('AI WIN!!!')
+        else:
+            print('REMIS!!!')
+
     def get_rounds_number_from_stream(self):
         """Get rounds number from stream."""
         is_incorrect = True
@@ -145,6 +177,19 @@ class RPSLSGame:
                 return rounds_number
             else:
                 print('Rounds number must by an integer number.')
+                self.print_line()
+        self.print_line()
+
+    def get_points_number_from_stream(self):
+        """Get points number from stream."""
+        is_incorrect = True
+        while is_incorrect:
+            points_number = input('Type number of points: ')
+            if points_number.isdigit():
+                points_number = int(points_number)
+                return points_number
+            else:
+                print('Points number must by an integer number.')
                 self.print_line()
         self.print_line()
 
