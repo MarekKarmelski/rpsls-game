@@ -51,11 +51,12 @@ class RPSLSGame:
         """Display application name."""
         self.print_line()
         print(self.APPLICATION_NAME)
-        self.print_line()
 
     def display_app_menu(self):
         """Display application menu."""
+        self.print_line()
         print('MENU:')
+        self.print_line()
         print('1. Start new game')
         print('2. Load saved game')
         print('3. Exit game')
@@ -63,7 +64,9 @@ class RPSLSGame:
 
     def display_game_menu(self):
         """Display game menu."""
+        self.print_line()
         print('GAME MENU:')
+        self.print_line()
         print('1. Round game')
         print('2. Points game')
         print('3. Back')
@@ -107,6 +110,9 @@ class RPSLSGame:
 
     def round_game(self):
         """Round game."""
+        self.print_line()
+        print('ROUND GAME')
+        self.print_line()
         rounds = self.get_rounds_number_from_stream()
         current_round = 1
         real_palyer_score = 0
@@ -114,12 +120,16 @@ class RPSLSGame:
         real_palyer = RealPlayer()
         ai_player = AiPlayer()
         while current_round <= rounds:
+            self.print_line()
             print('ROUND {0}'.format(current_round))
+            self.print_line()
             print('SCORE: REAL USER({0}) - AI({1})'.format(real_palyer_score, ai_player_score))
+            self.print_line()
             real_player_element = real_palyer.choose_element()
             ai_player_element = ai_player.choose_element()
-            print('User selection: {}'.format(real_player_element))
-            print('AI selection: {}'.format(ai_player_element))
+            self.print_line()
+            print('USER selection: [{}] - AI selection: [{}]'.format(real_player_element, ai_player_element))
+            self.print_line()
             if real_player_element == ai_player_element:
                 real_palyer_score += 1
                 ai_player_score += 1
@@ -129,8 +139,9 @@ class RPSLSGame:
                 ai_player_score += 1
             current_round += 1
         print('SCORE: REAL USER({0}) - AI({1})'.format(real_palyer_score, ai_player_score))
+        self.print_line()
         if real_palyer_score > ai_player_score:
-            print('YOU WIN!!!!')
+            print('USER WIN!!!!')
         elif ai_player_score > real_palyer_score:
             print('AI WIN!!!')
         else:
@@ -138,6 +149,9 @@ class RPSLSGame:
 
     def points_game(self):
         """Points game."""
+        self.print_line()
+        print('POINTS GAME')
+        self.print_line()
         points = self.get_points_number_from_stream()
         current_round = 1
         real_palyer_score = 0
@@ -145,12 +159,16 @@ class RPSLSGame:
         real_palyer = RealPlayer()
         ai_player = AiPlayer()
         while real_palyer_score < points and ai_player_score < points:
+            self.print_line()
             print('ROUND {0}'.format(current_round))
+            self.print_line()
             print('SCORE: REAL USER({0}) - AI({1})'.format(real_palyer_score, ai_player_score))
+            self.print_line()
             real_player_element = real_palyer.choose_element()
             ai_player_element = ai_player.choose_element()
-            print('User selection: {}'.format(real_player_element))
-            print('AI selection: {}'.format(ai_player_element))
+            self.print_line()
+            print('USER selection: [{}] - AI selection: [{}]'.format(real_player_element, ai_player_element))
+            self.print_line()
             if real_player_element == ai_player_element:
                 real_palyer_score += 1
                 ai_player_score += 1
@@ -160,8 +178,9 @@ class RPSLSGame:
                 ai_player_score += 1
             current_round += 1
         print('SCORE: REAL USER({0}) - AI({1})'.format(real_palyer_score, ai_player_score))
+        self.print_line()
         if real_palyer_score > ai_player_score:
-            print('YOU WIN!!!!')
+            print('USER WIN!!!!')
         elif ai_player_score > real_palyer_score:
             print('AI WIN!!!')
         else:
@@ -176,6 +195,7 @@ class RPSLSGame:
                 rounds_number = int(rounds_number)
                 return rounds_number
             else:
+                self.print_line()
                 print('Rounds number must by an integer number.')
                 self.print_line()
         self.print_line()

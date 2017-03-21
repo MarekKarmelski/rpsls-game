@@ -19,13 +19,16 @@ class RealPlayer(Player):
         """Get element from stream."""
         is_incorrect = True
         while is_incorrect:
-            print(self.elements)
-            element = input('Select your element: ')
+            element = input('Select your element {}: '.format(self.elements))
             if isinstance(element, str):
                 if element in self.elements:
                     is_incorrect = False
                 else:
+                    print('-'*50)
                     print('Element must be from list.')
+                    print('-' * 50)
             else:
+                print('-' * 50)
                 print('Element must be string.')
+                print('-' * 50)
         return element
