@@ -27,8 +27,10 @@ class ScoreTable:
     def save_to_file(self):
         """Save score table to file"""
         file_name = 'game_' + time.strftime('%Y%m%d%H%M%S') + '.txt'
-        with open(file_name, 'w') as game_score_file:
-            game_score_file.write(self.table_data)
+        for score in self.table_data:
+            line = 'Round {0}: USER score: {1} - AI score: {2}'.format(score[0], score[1], score[2])
+            with open(file_name, 'a') as game_score_file:
+                game_score_file.write(line + "\n")
 
     def format_matrix(self, header, matrix,
                       top_format, left_format, cell_format, row_delim, col_delim):
