@@ -10,6 +10,7 @@ from src.player import Player
 class RealPlayer(Player):
 
     def choose_element(self):
+        """Get element from stream."""
         element = self.get_element_from_strem()
         element_class = getattr(importlib.import_module('src.' + element), element.title())
         element_instance = element_class()

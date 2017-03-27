@@ -4,6 +4,7 @@
 import os
 from src.real_player import RealPlayer
 from src.ai_player import AiPlayer
+from src.score_table import ScoreTable
 
 """RPSLS game."""
 
@@ -14,8 +15,8 @@ class RPSLSGame:
     LINE_LENGTH = 50
 
     def run(self):
-        run_app = True
         """Run game."""
+        run_app = True
         self.display_app_name()
         self.display_app_menu()
         while run_app:
@@ -41,8 +42,6 @@ class RPSLSGame:
                         run_game = False
                 self.display_app_menu()
             elif option == 2:
-                self.display_app_menu()
-            elif option == 3:
                 self.clear()
                 self.exit_game()
                 run_app = False
@@ -58,8 +57,7 @@ class RPSLSGame:
         print('MENU:')
         self.print_line()
         print('1. Start new game')
-        print('2. Load saved game')
-        print('3. Exit game')
+        print('2. Exit game')
         self.print_line()
 
     def display_game_menu(self):
@@ -76,13 +74,13 @@ class RPSLSGame:
         """Get option from stream."""
         is_incorrect = True
         while is_incorrect:
-            option_number = input('Select option [1-3]: ')
+            option_number = input('Select option [1-2]: ')
             if option_number.isdigit():
                 option_number = int(option_number)
-                if option_number in [1, 2, 3]:
+                if option_number in [1, 2]:
                     is_incorrect = False
                 else:
-                    print('Option number must by from 1 to 3.')
+                    print('Option number must by from 1 to 2.')
                     self.print_line()
             else:
                 print('Option number must by an integer number.')
@@ -115,15 +113,15 @@ class RPSLSGame:
         self.print_line()
         rounds = self.get_rounds_number_from_stream()
         current_round = 1
-        real_palyer_score = 0
-        ai_player_score = 0
+        score_table = ScoreTable()
+        score_table.set_headers(['ROUND', 'USER', 'AI'])
         real_palyer = RealPlayer()
         ai_player = AiPlayer()
         while current_round <= rounds:
             self.print_line()
             print('ROUND {0}'.format(current_round))
             self.print_line()
-            print('SCORE: REAL USER({0}) - AI({1})'.format(real_palyer_score, ai_player_score))
+            print('SCORE: REAL USER({0}) - AI({1})'.format(real_palyer.get_score(), ai_player.get_score()))
             self.print_line()
             real_player_element = real_palyer.choose_element()
             ai_player_element = ai_player.choose_element()
@@ -131,24 +129,28 @@ class RPSLSGame:
             print('USER selection: [{}] - AI selection: [{}]'.format(real_player_element, ai_player_element))
             self.print_line()
             if real_player_element == ai_player_element:
-                real_palyer_score += 1
-                ai_player_score += 1
+                real_palyer.increase_score()
+                ai_player.increase_score()
             elif real_player_element > ai_player_element:
-                real_palyer_score += 1
+                real_palyer.increase_score()
             elif real_player_element < ai_player_element:
-                ai_player_score += 1
+                ai_player.increase_score()
+            score_table.set_round_data(current_round, real_palyer.get_score(), ai_player.get_score())
             current_round += 1
-        print('SCORE: REAL USER({0}) - AI({1})'.format(real_palyer_score, ai_player_score))
+        print('SCORE: REAL USER({0}) - AI({1})'.format(real_palyer.get_score(), ai_player.get_score()))
         self.print_line()
-        if real_palyer_score > ai_player_score:
+        if real_palyer.get_score() > ai_player.get_score():
             print('USER WIN!!!!')
-        elif ai_player_score > real_palyer_score:
+        elif ai_player.get_score() > real_palyer.get_score():
             print('AI WIN!!!')
         else:
             print('REMIS!!!')
-        headers = ['ROUND', 'USER', 'AI']
-        data = [[1, 2, 1], [0, 1, 0], [2, 4, 2], [0, 1, 0]]
-        print(self.format_matrix(headers, data, '{:^{}}', '', '{:>{}.0f}', '\n', ' | '))
+        self.print_line()
+        print('SCORE TABLE')
+        self.print_line()
+        score_table.display()
+        score_table.save_to_file()
+
 
     def points_game(self):
         """Points game."""
@@ -157,15 +159,15 @@ class RPSLSGame:
         self.print_line()
         points = self.get_points_number_from_stream()
         current_round = 1
-        real_palyer_score = 0
-        ai_player_score = 0
+        score_table = ScoreTable()
+        score_table.set_headers(['ROUND', 'USER', 'AI'])
         real_palyer = RealPlayer()
         ai_player = AiPlayer()
-        while real_palyer_score < points and ai_player_score < points:
+        while real_palyer.get_score() < points and ai_player.get_score() < points:
             self.print_line()
             print('ROUND {0}'.format(current_round))
             self.print_line()
-            print('SCORE: REAL USER({0}) - AI({1})'.format(real_palyer_score, ai_player_score))
+            print('SCORE: REAL USER({0}) - AI({1})'.format(real_palyer.get_score(), ai_player.get_score()))
             self.print_line()
             real_player_element = real_palyer.choose_element()
             ai_player_element = ai_player.choose_element()
@@ -173,21 +175,27 @@ class RPSLSGame:
             print('USER selection: [{}] - AI selection: [{}]'.format(real_player_element, ai_player_element))
             self.print_line()
             if real_player_element == ai_player_element:
-                real_palyer_score += 1
-                ai_player_score += 1
+                real_palyer.increase_score()
+                ai_player.increase_score()
             elif real_player_element > ai_player_element:
-                real_palyer_score += 1
+                real_palyer.increase_score()
             elif real_player_element < ai_player_element:
-                ai_player_score += 1
+                ai_player.increase_score()
+            score_table.set_round_data(current_round, real_palyer.get_score(), ai_player.get_score())
             current_round += 1
-        print('SCORE: REAL USER({0}) - AI({1})'.format(real_palyer_score, ai_player_score))
+        print('SCORE: REAL USER({0}) - AI({1})'.format(real_palyer.get_score(), ai_player.get_score()))
         self.print_line()
-        if real_palyer_score > ai_player_score:
+        if real_palyer.get_score() > ai_player.get_score():
             print('USER WIN!!!!')
-        elif ai_player_score > real_palyer_score:
+        elif ai_player.get_score() > real_palyer.get_score():
             print('AI WIN!!!')
         else:
             print('REMIS!!!')
+        self.print_line()
+        print('SCORE TABLE')
+        self.print_line()
+        score_table.display()
+        score_table.save_to_file()
 
     def get_rounds_number_from_stream(self):
         """Get rounds number from stream."""
@@ -215,21 +223,6 @@ class RPSLSGame:
                 print('Points number must by an integer number.')
                 self.print_line()
         self.print_line()
-
-    def format_matrix(self, header, matrix,
-                      top_format, left_format, cell_format, row_delim, col_delim):
-        table = [[''] + header] + [[name] + row for name, row in zip(header, matrix)]
-        table_format = [['{:^{}}'] + len(header) * [top_format]] \
-                       + len(matrix) * [[left_format] + len(header) * [cell_format]]
-        col_widths = [max(
-            len(format.format(cell, 0))
-            for format, cell in zip(col_format, col))
-                      for col_format, col in zip(zip(*table_format), zip(*table))]
-        return row_delim.join(
-            col_delim.join(
-                format.format(cell, width)
-                for format, cell, width in zip(row_format, row, col_widths))
-            for row_format, row in zip(table_format, table))
 
     def exit_game(self):
         """Exit game."""
